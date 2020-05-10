@@ -93,8 +93,6 @@ if SERVER then
 				--wep:SetTotalLockpicks( wep:GetTotalLockpicks() - 1 ) 
 				wep:Fail()
 				wep:SetNextPrimaryFire(CurTime() + 2)
-				ply:PrintMessage( HUD_PRINTCONSOLE, "Broke lockpick" )
-				ply:ChatPrint( "You broke a lockpick!" )
 			end
 		end
 	end)
@@ -108,8 +106,6 @@ if SERVER then
 				if wep:GetNWBool("lockpick_canTurn", false) then	
 					wep:Succeed()
 					ServerLog(ply:Nick().." has unlocked a door!\n")
-				else
-					ply:PrintMessage( HUD_PRINTCONSOLE, "Unable to unlock door because the server has not confirmed the angle" )
 				end
 			end
 		end
@@ -122,7 +118,6 @@ if SERVER then
 			
 			if wep:GetClass() == "lockpick" then
 				wep:Fail( true )
-				ply:PrintMessage( HUD_PRINTCONSOLE, "Cancelled lockpicking" )
 			end
 		end
 	end)
@@ -192,7 +187,6 @@ function SWEP:PrimaryAttack()
 	local totalLockpicks = self:GetTotalLockpicks()
 	
 	if totalLockpicks <= 0 then
-		self.Owner:ChatPrint("You have no lockpicks left!")
 		return
 	end
 
@@ -241,7 +235,6 @@ function SWEP:PrimaryAttack()
 end
 
 local function openPanel( self, totalLockpicks )
-	print("Open panel", totalLockpicks)
 	if SERVER then return end
 	
 	local baseH = ScrH()/2.5
@@ -495,11 +488,6 @@ function SWEP:Think()
 		end
 	end
 end
-
-function SWEP:SecondaryAttack()
-	self.Owner:ChatPrint( "You have "..self:GetTotalLockpicks().." lockpick(s) left!" )
-end
-
 
 DarkRP.hookStub{
 	name = "canLockpick",
